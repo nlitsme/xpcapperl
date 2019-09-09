@@ -52,6 +52,12 @@ while (<>) {
     if (/^((?:\d\d\d\d-\d\d-\d\d )?\d\d:\d\d:\d\d\.\d\d\d\d\d\d) (.*)/) {
         my ($curt, $line)= ($1, $2);
         if (defined $d && length($p)) {
+            if (substr($d,0,4) eq "\x02\x00\x00\x00\x45") {
+                $d = substr($d,4);
+            }
+            if (substr($d,12,3) eq "\x08\x00\x45") {
+                $d = substr($d,14);
+            }
             if (!dumppkt($t, $p, $d, $previnf) && $verbose) {
                 print "ignoring $t\n";
             }
@@ -120,7 +126,7 @@ sub dumppkt {
     }
     elsif ($ipv==6) {
         return if $pos+0x28>length($d);
-        return if (unpack("N", substr($d, $pos, 4))!=0x60000000);
+        #return if (unpack("N", substr($d, $pos, 4))!=0x60000000);
         my $datalen= unpack("n", substr($d, $pos+4, 2));
         $type= unpack("C", substr($d, $pos+6, 1));
 
