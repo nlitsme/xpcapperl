@@ -1,6 +1,8 @@
 # xpcapperl
 Tool for creating a more readable hexdump output from tcpdump.
 
+No attempt is made to resolve retransmits.
+
 Example Usage:
   * stream data as ascii, use tcpdump parsing of DNS, DHCP packets
 
