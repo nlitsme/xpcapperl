@@ -219,7 +219,7 @@ sub dumppkt {
         }
         my $l= length($d);
         if (defined $s) {
-            printf("%s %-45s [%08x]%1s%s\n", $t, tag($p), $s, $flags, $l ? "... ".($ascii>1 ? sprintf("%d bytes", $l) : unpack("H*", $d)) : "");
+            printf("%s %-45s %1s[%08x] %s\n", $t, tag($p), $flags, $s, $l ? "... ".($ascii>1 ? sprintf("%d bytes", $l) : unpack("H*", $d)) : "");
         }
         else {
             printf("%s %-45s            %s\n", $t, tag($p), $l ? "... ".($ascii>1 ? sprintf("%d bytes", $l) : unpack("H*", $d)) : "");
