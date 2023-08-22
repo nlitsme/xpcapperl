@@ -44,18 +44,22 @@ GetOptions(
     "p=s"=>\$filterports,
     "w=s"=>\$savedir,
     "n"=>\$noempty) or die "Usage: xpcap [-a[a]] [-t] [-z] [-v] [-p PORT(S)] [-w SAVEDIR] [-n]\n";
+
+
 my ($t, $p, $d, $previnf);
 $filterports= ",$filterports," if $filterports;
 
 while (<>) {
     # todo: output beacon + probes
+
+    # match optional date, followed by time with usec precision.
     if (/^((?:\d\d\d\d-\d\d-\d\d )?\d\d:\d\d:\d\d\.\d\d\d\d\d\d) (.*)/) {
         my ($curt, $line)= ($1, $2);
         if (defined $d && length($p)) {
-            if (substr($d,0,4) eq "\x02\x00\x00\x00\x45") {
+            if (length($d)>=4 && substr($d,0,4) eq "\x02\x00\x00\x00\x45") {
                 $d = substr($d,4);
             }
-            if (substr($d,12,3) eq "\x08\x00\x45") {
+            if (length($d)>=15 && substr($d,12,3) eq "\x08\x00\x45") {
                 $d = substr($d,14);
             }
             if (!dumppkt($t, $p, $d, $previnf) && $verbose) {
